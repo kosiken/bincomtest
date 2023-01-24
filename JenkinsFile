@@ -4,7 +4,6 @@ pipeline {
     commitSha = sh(returnStdout: true, script: "git log -1 --pretty=format:'%h'").trim()
     imageName = "${imageRepo}:${commitSha}"
   }
-
     agent any
 
     stages {
