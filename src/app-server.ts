@@ -58,7 +58,7 @@ export class AppServer {
   public async listen(): Promise<Server> {
 
     this.server = this.app.listen(this.port);
-    return this.server;
+    return this.server as any;
   }
 
 
