@@ -1,0 +1,33 @@
+pipeline {
+    environment {
+    imageRepo = 'kosiken/bincomtest'
+    commitSha = sh(returnStdout: true, script: "git log -1 --pretty=format:'%h'").trim()
+    imageName = "${imageRepo}:${commitSha}"
+  }
+
+    agent any
+
+    stages {
+      stage('Clone Source') {
+          steps {
+            checkout scm
+          }
+      }
+       stage('Build Image') {
+          steps {
+            sh ' docker build -t ${imageName} --target production .'
+          }
+      }
+      stage('Deploy Application') {
+          steps {
+             sh 'docker stop bincomtest || true && docker rm bincomtest || true'
+             sh 'docker run -d -p 8090:8090 --name bincomtest --env-file ~/env/kosiken/bincomtest.env ${imageName}'
+          }
+      }
+        stage('Cleanup Build') {
+          steps {
+             sh 'docker system prune -a -f || true'
+          }
+      }
+    }
+}
