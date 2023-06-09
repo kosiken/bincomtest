@@ -11,7 +11,11 @@ import * as path from 'path';
 export function initializeDb(config: IConfig['db']): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
         try {
-            Logger.log(config)
+            Logger.log(config
+        )
+        // If you want to run migrations again please comment out the next two lines
+            res(true); 
+            return;
         const exists = fs.existsSync(path.join(__dirname, '.done'))
         if(exists) {
             Logger.log('Seed has ran before');
