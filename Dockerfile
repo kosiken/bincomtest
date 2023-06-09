@@ -12,8 +12,8 @@ RUN yarn
 COPY . /
 CMD ["yarn", "run", "start"]
 
-FROM base as dev
-ENV NODE_ENV=development
-RUN yarn
-COPY . /
-CMD ["yarn", "run", "dev"]
+# FROM base as dev
+# ENV NODE_ENV=development
+# RUN yarn
+# COPY . /
+# CMD ["yarn", "run", "dev"]
