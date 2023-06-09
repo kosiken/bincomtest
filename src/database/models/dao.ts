@@ -97,12 +97,11 @@ export class Transaction {
 
       async resultForLga(lga_id: number): Promise<IAnnouncedPollingUnitResult[]> {
         const database = this.database;
-        const query = database.db!('lga')
+        const query = database.db!('announced_pu_results')
         
-        .rightJoin('polling_unit', 'lga.lga_id', 'polling_unit.lga_id')
-        .rightJoin('announced_pu_results','polling_unit.uniqueid', '=', 'announced_pu_results.polling_unit_uniqueid')
+        .leftJoin('polling_unit', 'polling_unit.uniqueid', '=', 'announced_pu_results.polling_unit_uniqueid')
         .select('announced_pu_results.*')
-        .where('lga.lga_id', '=', lga_id);
+        .where('polling_unit.lga_id', '=', lga_id);
         const result = await query;
         return result as IAnnouncedPollingUnitResult[];
       }

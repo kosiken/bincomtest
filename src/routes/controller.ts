@@ -116,10 +116,16 @@ export async function fetchResultForLga(req: Request, res: Response) {
         
         const dao = new Transaction(Database.getInstance());
         const results = await dao.resultForLga(parseInt(req.params['lgaId']))
+        const lgas = await dao.findAll({}, 'lga', 1, 1000);
+        console.log(results)
         return res.status(201).json({
             status: 'success',
             message: 'announced_polling_unit_result',
-            data: results.reduce(reducerFunction, {}),
+            data: {
+              results: results.reduce(reducerFunction, {}),
+              lgas: lgas.payload,
+            
+            },
           });
     }catch (err) {
         if ((err as any).errorType) {
